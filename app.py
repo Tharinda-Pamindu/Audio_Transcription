@@ -5,13 +5,18 @@ Transcribes audio files (Sinhala / English) using OpenAI Whisper large-v3.
 
 import os
 import json
+import shutil
 import tempfile
 import traceback
 from pathlib import Path
 
 from flask import Flask, request, jsonify, render_template, send_from_directory
 
+import torch
 import whisper
+
+USE_FP16 = torch.cuda.is_available()
+FFMPEG_AVAILABLE = shutil.which("ffmpeg") is not None
 
 # ---------------------------------------------------------------------------
 # Configuration
@@ -80,11 +85,22 @@ def transcribe():
     language = request.form.get("language", None)  # None = auto-detect
 
     try:
+        if not FFMPEG_AVAILABLE:
+            return jsonify({
+                "error": "FFmpeg is not installed or not in PATH. "
+                         "Whisper requires FFmpeg to decode audio files.\n\n"
+                         "Install it:\n"
+                         "  • Windows: choco install ffmpeg  OR  winget install ffmpeg\n"
+                         "  • Or download from https://ffmpeg.org/download.html\n"
+                         "  • Then restart this app."
+            }), 500
+
         model = get_model(model_name)
 
         # Build transcribe options
         options = {
             "verbose": False,
+            "fp16": USE_FP16,
         }
         if language and language != "auto":
             options["language"] = language
@@ -106,6 +122,14 @@ def transcribe():
             "segments": segments,
             "model": model_name,
         })
+
+    except FileNotFoundError:
+        traceback.print_exc()
+        return jsonify({
+            "error": "FFmpeg not found. Whisper requires FFmpeg to decode audio.\n"
+                     "Install: choco install ffmpeg  OR  winget install ffmpeg\n"
+                     "Then restart this app."
+        }), 500
 
     except Exception as e:
         traceback.print_exc()
@@ -135,5 +159,13 @@ if __name__ == "__main__":
     print("\n╔══════════════════════════════════════════════════╗")
     print("║   Audio Transcription — Whisper + Liquid Glass   ║")
     print("║   Open:  http://127.0.0.1:5000                   ║")
-    print("╚══════════════════════════════════════════════════╝\n")
+    print("╚══════════════════════════════════════════════════╝")
+    if not FFMPEG_AVAILABLE:
+        print("  ⚠  FFmpeg NOT found — install it before transcribing.")
+        print("     choco install ffmpeg  OR  winget install ffmpeg")
+        print("     Or download from: https://ffmpeg.org/download.html")
+    else:
+        print(f"  ✓  FFmpeg found: {shutil.which('ffmpeg')}")
+    print(f"  ✓  CUDA GPU: {'Yes' if USE_FP16 else 'No (using CPU)'}")
+    print()
     app.run(host="127.0.0.1", port=5000, debug=False)
