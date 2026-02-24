@@ -14,7 +14,7 @@
   <em>Transcribe Sinhala & English audio with world-class accuracy — beautiful Liquid Glass UI, drag-and-drop upload, timestamped segments, and one-click export. No command line needed.</em>
 </p>
 
----
+## <div><img src="https://github.com/Tharinda-Pamindu/Audio_Transcription/blob/main/templates/ss_at.png" alt="ScreenShot"/></div>
 
 ## 🎯 The Problem
 
