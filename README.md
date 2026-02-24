@@ -70,8 +70,8 @@ This will:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Tharinda-Pamindu/Voice-Activity-Detector.git
-cd Voice-Activity-Detector
+git clone https://github.com/Tharinda-Pamindu/Audio_Transcription.git
+cd Audio_Transcription
 
 # 2. Create & activate virtual environment
 python -m venv .venv

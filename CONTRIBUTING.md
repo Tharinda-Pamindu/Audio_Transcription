@@ -27,8 +27,8 @@ By participating in this project, you agree to maintain a respectful and inclusi
 1. **Fork** the repository on GitHub
 2. **Clone** your fork locally:
    ```bash
-   git clone https://github.com/YOUR-USERNAME/Voice-Activity-Detector.git
-   cd Voice-Activity-Detector
+   git clone https://github.com/Tharinda-Pamindu/Audio_Transcription.git
+   cd Audio_Transcription
    ```
 3. **Create a branch** for your feature or fix:
    ```bash
@@ -70,7 +70,7 @@ The app will be available at `http://127.0.0.1:5000`.
 
 ### 🐛 Reporting Bugs
 
-- Use the [GitHub Issues](https://github.com/Tharinda-Pamindu/Voice-Activity-Detector/issues) page
+- Use the [GitHub Issues](https://github.com/Tharinda-Pamindu/Audio_Transcription/issues) page
 - Include a clear title and description
 - Provide steps to reproduce the issue
 - Include your OS, Python version, and GPU info (if applicable)
